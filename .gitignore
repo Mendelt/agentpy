@@ -1,3 +1,6 @@
+# Virtualenv for this project
+devenv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
