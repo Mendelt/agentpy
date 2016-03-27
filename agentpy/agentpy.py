@@ -36,6 +36,9 @@ class Agent(object):
 
         function_defs = [
             (lib.init_agent, [c_char_p], c_int),
+            (lib.init_snmp, [c_char_p], c_int),
+            (lib.agent_check_and_process, [c_int], c_int),
+            (lib.snmp_shutdown, [c_char_p], None),
 
             (lib.netsnmp_ds_get_boolean, [c_int, c_int], c_int),
             (lib.netsnmp_ds_set_boolean, [c_int, c_int, c_int], c_int),
@@ -51,9 +54,24 @@ class Agent(object):
 
         return lib
 
-    def init_agent(self, agent_name):
+    def init_agent(self, name):
         _parse_exceptions(
-            self._netsnmpagent.init_agent(agent_name))
+            self._netsnmpagent.init_agent(name))
+
+    def init_snmp(self, name):
+        _parse_exceptions(
+            self._netsnmpagent.init_snmp(name))
+
+    def agent_check_and_process(self, block):
+        """
+        Checks for packets arriving on the SNMP port and processes them if any are found.
+        :param block: If true the function call will block until a packet arrives or an alarm must be run
+        :return: A positive integer if packets were processed, zero if an alarm occurred and -1 if an error occured
+        """
+        return self._netsnmpagent.agent_check_and_process(1 if block else 0)
+
+    def snmp_shutdown(self, name):
+        self._netsnmpagent.snmp_shutdown(name)
 
     def ds_get_boolean(self, storeid, which):
         return self._netsnmpagent.netsnmp_ds_get_boolean(storeid, which) == 1
