@@ -25,10 +25,26 @@ class Agent(object):
         return netsnmpagent
 
     def init_agent(self, agent_name):
-        self._netsnmpagent.init_agent(agent_name)
+        _parse_exceptions(
+            self._netsnmpagent.init_agent(agent_name))
 
     def ds_set_string(self, val1, val2, val3):
-        self._netsnmpagent.netsnmp_ds_set_string(val1, val2, val3)
+        _parse_exceptions(
+            self._netsnmpagent.netsnmp_ds_set_string(val1, val2, val3))
 
     def ds_get_string(self, val1, val2):
         return self._netsnmpagent.netsnmp_ds_get_string(val1, val2)
+
+
+_SNMP_ERR_NO_ERROR = 0
+
+
+def _parse_exceptions(code):
+    if code == _SNMP_ERR_NO_ERROR:
+        return
+    else:
+        raise AgentPyException()
+
+
+class AgentPyException(Exception):
+    pass
