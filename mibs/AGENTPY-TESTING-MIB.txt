@@ -1,0 +1,35 @@
+NET-SNMP-TUTORIAL-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	experimental, OBJECT-TYPE, Integer32, MODULE-IDENTITY FROM SNMPv2-SMI
+	OBJECT-GROUP FROM SNMPv2-CONF;
+
+agentpyTestingMIB MODULE-IDENTITY
+    LAST-UPDATED "201604010000Z"  -- 01 April 2016
+    ORGANIZATION "None"
+    CONTACT-INFO "Mendelt Siebenga"
+    DESCRIPTION "A simple mib for testing agentpy"
+    ::= { experimental 567 }
+
+agentpyMIBObjects OBJECT IDENTIFIER ::= { agentpyTestingMIB 1 }
+agentpyMIBConformance OBJECT IDENTIFIER ::= { agentpyTestingMIB 2 }
+
+agentpyValueOne OBJECT-TYPE
+    SYNTAX Integer32
+    MAX-ACCESS  read-write
+    STATUS current
+    DESCRIPTION
+	"Writable integer for testing purposes"
+    DEFVAL { 1 }
+    ::= { agentpyMIBObjects 1 }
+
+agentpyValueTwo OBJECT-TYPE
+    SYNTAX Integer32
+    MAX-ACCESS  read-write
+    STATUS current
+    DESCRIPTION
+	"Another writable integer, again for testing purposes"
+    DEFVAL { 2 }
+    ::= { agentpyMIBObjects 2 }
+
+END
