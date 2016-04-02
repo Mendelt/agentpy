@@ -1,4 +1,4 @@
-from ctypes import cdll, c_char_p, c_int
+from ctypes import cdll, c_char_p, c_int, c_void_p
 import ctypes.util
 
 
@@ -39,6 +39,8 @@ class Agent(object):
             (lib.init_snmp, [c_char_p], c_int),
             (lib.agent_check_and_process, [c_int], c_int),
             (lib.snmp_shutdown, [c_char_p], None),
+            (lib.init_mib, [], None),
+            (lib.read_mib, [c_char_p], c_void_p),  # Real return type is struct tree* but we don't care right now.
 
             (lib.netsnmp_ds_get_boolean, [c_int, c_int], c_int),
             (lib.netsnmp_ds_set_boolean, [c_int, c_int, c_int], c_int),
@@ -61,6 +63,12 @@ class Agent(object):
     def init_snmp(self, name):
         _parse_exceptions(
             self._netsnmpagent.init_snmp(name))
+
+    def init_mib(self):
+        self._netsnmpagent.init_mib()
+
+    def read_mib(self, mib_path):  # TODO: var name
+        self._netsnmpagent.read_mib(mib_path)
 
     def agent_check_and_process(self, block):
         """
