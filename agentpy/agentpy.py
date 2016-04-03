@@ -3,7 +3,7 @@ import ctypes.util
 
 
 class Agent(object):
-    def __init__(self, agent_name, mib_path, socket):
+    def __init__(self, agent_name, socket='/var/agentx/master', mib_path=None):
         self._mib_path = mib_path
         self._started = False
         self._lib = NetSNMPWrapper()
@@ -11,7 +11,7 @@ class Agent(object):
         # Set the master socket
         self._lib.ds_set_string(DS_APPLICATION_ID, DS_AGENT_X_SOCKET, socket)
 
-        # Set the agent role
+        # Set the agent role to agentx subagent
         self._lib.ds_set_boolean(DS_APPLICATION_ID, DS_AGENT_ROLE, True)
 
         # Init
@@ -19,8 +19,9 @@ class Agent(object):
         self._lib.init_snmp(agent_name)
 
         # Load the MIB
-        self._lib.init_mib()
-        self._lib.read_mib('mibs/AGENTPY-TESTING-MIB.txt')
+        if mib_path is not None:
+            self._lib.init_mib()
+            self._lib.read_mib(mib_path)
 
     def run(self):
         self._started = True
