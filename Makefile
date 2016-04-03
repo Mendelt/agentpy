@@ -14,7 +14,7 @@ $(VENV_NAME)/bin/activate: requirements.txt
 
 test:
 	@$(VENV_NAME)/bin/flake8 agentpy
+	@$(VENV_NAME)/bin/python setup.py test
 
 run: venv
 	@PYTHONPATH=agentpy $(PYTHON) agentpy/main.py
-
