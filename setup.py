@@ -1,11 +1,11 @@
 from setuptools import setup
-from setuptools.command.test import test as TestCommand
+from setuptools.command.test import test
 import sys
 
 
-class PyTest(TestCommand):
+class PyTest(test):
     def initialize_options(self):
-        TestCommand.initialize_options(self)
+        test.initialize_options(self)
         self.pytest_args = ['agentpy']
 
     def run_tests(self):
@@ -17,9 +17,8 @@ class PyTest(TestCommand):
 
 setup(
     name='agentpy',
-    version='0.01a',
+    version='0.1a0',
     author='Mendelt Siebenga',
-    author_email='mendelt@msiebenga.com',
     description='Implement your own agentX subagent using netsnmp',
     license='MIT',
     keywords='',
@@ -29,3 +28,4 @@ setup(
     tests_requires=['pytest'],
     cmdclass={'test': PyTest}
 )
+
